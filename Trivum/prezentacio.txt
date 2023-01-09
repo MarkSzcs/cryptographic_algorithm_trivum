@@ -1,0 +1,38 @@
+Trivium: Egy megalkotásának lényegéből (azaz az egyszerűségéből) fakadóan sebezhető, azonban rugalmas,
+hardware orientált stream titkosító algoritmus. Feltörésének legnagyobb nehézsége hogy első ránézésre bonyolultnak tűnik.
+
+A program az algoritmushoz hűen kezdetben generál egy 288 bitből álló kezdő állapotot, az inicializációs vektor és a kulcs felhasználásával.
+Ennek tárolására a program double ended queue-t (kétvégű sor) használ, amely gyors elem beillesztést biztosít.
+Illetve lehetővé teszi, hogy a sor mindkét végéről tudjunk pop-olni, (collections library deque művelet).
+
+
+					A 288 bit kezdeti állapot generálásának folyamata a következő:	az első 93 bitet feltölti a kulcs 80 bitjével,
+					a fennmaradó 13-at pedig 0-val, az ezt követő 84 bitet az inicializáló vektor 80-bitjével tölti fel,
+					a fennmaradó 4-et pedig nullával, valamint az ez utáni 111 bitet az utolső 3 bit kivételével 0-ra állítja, 
+					azt a 3-at pedig 1-re.
+					Ez után a program bitwise ÉS és kizáró VAGY oprátorokkal kiszámolja az algoritmusban specifikált indexű
+					15 bit értékét, majd 4x 'rotál'.
+					
+					A folyam pedig az algoritmusban specifikált 288 bit egyes szakaszainak, adott számszor egymás után fűzésével áll elő, mindaddig
+					Amíg előáll a 2 a 64-en bitből álló folyam.
+					
+					Vizuális típusok számára az egész folyamat hasonlíthat egy 
+					mechanikus széf, vagy zárszerkezet történő elforgatására, ha az említett speciális biteket
+ 					a nyitó-záró-mechanizmus elemeinek tekintjük. 
+
+					(KÉP Trivium.png)
+					(KÉP valosVegeredmeny.png)
+
+
+A program megvalositasarol: a program encript modban meghivva a kezdeti kulcsot es az inicializalo vektort randomnak valasztja ehhez a secret library randombits
+fuggvenyet hasznaltam amely egyreszt kenyelmesebb, masresz megbizhatobb mintha a math.random() fuggvenyt hivogatnam repetitivan a bitsorozat generalasara.
+
+Valamint a folyam generalasa soran az itertools repeat fuggvenyet hasznaltam amely elso parameterkent az ismetlendo elemet varja masodik parameterkent pedig,
+hogy hanyszor ismetelje.
+
+Argparse: a menuhoz.
+
+A binascii pedig a binaris es ascii reprezentaciok kozotti konvertalas miatt ereztem szuksegesnek, azonban ha jol emlekszem vegul nem is hasznaltam
+
+
+
